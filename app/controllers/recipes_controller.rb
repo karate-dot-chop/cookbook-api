@@ -1,7 +1,8 @@
 class RecipesController < ApplicationController
 
   def index
-    recipes = Recipe.all
+    recipes = R .
+    ecipe.all
     if params[:search_term]
       recipes = recipes.where("title iLIKE ?", "%#{params[:search_term]}%")
     end

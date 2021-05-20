@@ -4,4 +4,8 @@ Rails.application.routes.draw do
   get "/recipes/:id", controller: "recipes", action: "show"
   patch "/recipes/:id", controller: "recipes", action: "update"
   delete "/recipes/:id", controller: "recipes", action: "destroy"
+
+  post "/users", controller: "users", action: "create"
+  post "/sessions", controller: "sessions", action: "create"
+
 end
