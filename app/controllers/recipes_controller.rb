@@ -1,13 +1,16 @@
 class RecipesController < ApplicationController
 
   def index
-    recipes = R .
-    ecipe.all
-    if params[:search_term]
-      recipes = recipes.where("title iLIKE ?", "%#{params[:search_term]}%")
+    if current_user
+      recipes = Recipe.all
+      # if params[:search_term]
+      #   recipes = recipes.where("title iLIKE ?", "%#{params[:search_term]}%")
+      # end
+      # recipes.order(:id)
+      render json: {current_user: current_user, recipes: recipes}
+    else
+      render json: [], status: :unauthorized
     end
-    recipes.order(:id)
-    render json: recipes
   end
 
   def create
