@@ -7,22 +7,29 @@ class RecipesController < ApplicationController
       #   recipes = recipes.where("title iLIKE ?", "%#{params[:search_term]}%")
       # end
       # recipes.order(:id)
-      render json: {current_user: current_user, recipes: recipes}
+      render json: recipes
     else
       render json: [], status: :unauthorized
     end
   end
 
   def create
-    recipe = Recipe.new({
-      title: params[:title],
-      chef: params[:chef],
-      ingredients: params[:ingredients],
-      directions: params[:directions],
-      prep_time: params[:prep_time]
-    })
-    recipe.save
-    render json: recipe
+    if current_user
+      recipe = Recipe.new({
+        title: params[:title],
+        ingredients: params[:ingredients],
+        directions: params[:directions],
+        prep_time: params[:prep_time],
+        user_id: current_user.id
+      })
+      if recipe.save
+        render json: recipe
+      else
+        render json: {errors: recipe.errors.full_messages}, status: :unprocessable_entity
+      end
+    else
+      render json: {message: "You must be logged in to do that"}, status: :unauthorized
+    end
   end
 
   def show
@@ -33,7 +40,6 @@ class RecipesController < ApplicationController
   def update
     recipe = Recipe.find(params[:id])
     recipe.title = params[:title] || recipe.title
-    recipe.chef = params[:chef] || recipe.chef
     recipe.ingredients = params[:ingredients] || recipe.ingredients
     recipe.directions = params[:directions] || recipe.directions
     recipe.prep_time = params[:prep_time] || recipe.prep_time
