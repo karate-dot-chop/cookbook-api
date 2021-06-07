@@ -1,34 +1,27 @@
 class RecipesController < ApplicationController
 
   def index
-    if current_user
-      recipes = Recipe.all
-      # if params[:search_term]
-      #   recipes = recipes.where("title iLIKE ?", "%#{params[:search_term]}%")
-      # end
-      # recipes.order(:id)
-      render json: recipes
-    else
-      render json: [], status: :unauthorized
-    end
+    recipes = Recipe.all
+    # if params[:search_term]
+    #   recipes = recipes.where("title iLIKE ?", "%#{params[:search_term]}%")
+    # end
+    # recipes.order(:id)
+    render json: recipes
   end
 
   def create
-    if current_user
-      recipe = Recipe.new({
-        title: params[:title],
-        ingredients: params[:ingredients],
-        directions: params[:directions],
-        prep_time: params[:prep_time],
-        user_id: current_user.id
-      })
-      if recipe.save
-        render json: recipe
-      else
-        render json: {errors: recipe.errors.full_messages}, status: :unprocessable_entity
-      end
+    recipe = Recipe.new({
+      title: params[:title],
+      ingredients: params[:ingredients],
+      directions: params[:directions],
+      prep_time: params[:prep_time],
+      image_url: params[:image_url],
+      user_id: 1
+    })
+    if recipe.save
+      render json: recipe
     else
-      render json: {message: "You must be logged in to do that"}, status: :unauthorized
+      render json: {errors: recipe.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -43,8 +36,12 @@ class RecipesController < ApplicationController
     recipe.ingredients = params[:ingredients] || recipe.ingredients
     recipe.directions = params[:directions] || recipe.directions
     recipe.prep_time = params[:prep_time] || recipe.prep_time
-    recipe.save
-    render json: recipe
+    recipe.image_url = params[:image_url] || recipe.image_url
+    if recipe.save
+      render json: recipe
+    else
+      render json: {errors: recipe.errors.full_messages}, status: :unprocessable_entity
+    end
   end
 
   def destroy
