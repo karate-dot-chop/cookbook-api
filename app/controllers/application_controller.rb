@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  # serialization_scope :application
   # if Authorization header is found, it will decode the jwt and return a hash of user data. If not, it will return nil
   def current_user
     auth_headers = request.headers["Authorization"]

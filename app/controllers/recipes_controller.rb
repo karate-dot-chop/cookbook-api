@@ -34,15 +34,17 @@ class RecipesController < ApplicationController
 
   def update
     recipe = Recipe.find(params[:id])
-    recipe.title = params[:title] || recipe.title
-    recipe.ingredients = params[:ingredients] || recipe.ingredients
-    recipe.directions = params[:directions] || recipe.directions
-    recipe.prep_time = params[:prep_time] || recipe.prep_time
-    recipe.image_url = params[:image_url] || recipe.image_url
-    if recipe.save
-      render json: recipe
-    else
-      render json: {errors: recipe.errors.full_messages}, status: :unprocessable_entity
+    if current_user.id == recipe.user_id
+      recipe.title = params[:title] || recipe.title
+      recipe.ingredients = params[:ingredients] || recipe.ingredients
+      recipe.directions = params[:directions] || recipe.directions
+      recipe.prep_time = params[:prep_time] || recipe.prep_time
+      recipe.image_url = params[:image_url] || recipe.image_url
+      if recipe.save
+        render json: recipe
+      else
+        render json: {errors: recipe.errors.full_messages}, status: :unprocessable_entity
+      end
     end
   end
 
