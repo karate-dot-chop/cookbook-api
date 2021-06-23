@@ -18,4 +18,4 @@ Recipe.create!([
   {title: "Dumplings", ingredients: "Store bought pastry, filling, olive oil", directions: "Put filling into the pastry, brush with oil and boil", prep_time: 45, image_url: "https://mamalovestocook.com/wp-content/uploads/2020/05/boiled-dumplings.jpg", user_id: 1},
   {title: "Brownies", ingredients: "Flour, butter, sugar, cocoa", directions: "Mix ingredients, bake until crispy on outside", prep_time: 20, image_url: "https://celebratingsweets.com/wp-content/uploads/2019/02/Homemade-Brownies-1-5.jpg", user_id: 5},
   {title: "Mud Pie", ingredients: "Flour, water, mud.", directions: "Mix flour and water, add mud, bake at 350 degrees for 1 hour.", prep_time: 10, image_url: "http://cdn-image.myrecipes.com/sites/default/files/styles/300x300/public/image/recipes/sl/05/12/mocha-mud-pie-sl-257949-x.jpg?itok=_ChocANl", user_id: 2}
-])
+])  
