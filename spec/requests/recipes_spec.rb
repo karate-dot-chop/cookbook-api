@@ -33,4 +33,35 @@ RSpec.describe "Recipes", type: :request do
       expect(recipe["ingredients"]).to eq("Flour, water, pepperoni, cheese")
     end
   end
+  describe "POST /recipes" do
+    it 'should create a new recipe' do
+      # create a JWT for the user
+      jwt = JWT.encode({user_id: User.first.id}, Rails.application.credentials.fetch(:secret_key_base), "HS256")
+      # send the create request
+      post "/recipes", params: {
+        title: "Rice Crispy Treats", 
+        ingredients: "Rice Crispies, Marshmallows", 
+        directions: "Melt marshmallows, mix with rice cripies, shape, and let harden"
+      },
+      headers: {"Authorization" => "Bearer #{jwt}"}
+
+      recipe = JSON.parse(response.body)
+      expect(response).to have_http_status(200)
+      expect(recipe["title"]).to eq("Rice Crispy Treats")
+    end
+    it 'returns unauthorized without a jwt' do
+      # send the create request
+      post "/recipes", params: {}
+      expect(response).to have_http_status(401)
+    end
+    it 'returns an error status code with invalid data' do
+       # create a JWT for the user
+      jwt = JWT.encode({user_id: User.first.id}, Rails.application.credentials.fetch(:secret_key_base), "HS256")
+      # send the create request
+      post "/recipes", params: {},
+      headers: {"Authorization" => "Bearer #{jwt}"}
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
 end
