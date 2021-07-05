@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   get "/users/:id", controller: "users", action: "show"
   post "/sessions", controller: "sessions", action: "create"
 
+  get "/messages", controller: "messages", action: "index"
+  post "/messages", controller: "messages", action: "create"
+
   get "/*path" => proc { [200, {}, [ActionView::Base.new.render(file: 'public/index.html')]] }
 
 end
